@@ -65,4 +65,36 @@ var letterCombinations = function(digits) {
   console.log(objList);
 };
 
+var generator = function(s, parent) {
+  this.parent = parent;
+  switch(s) {
+    case "":
+      this.list = ["a", "b", "c"]
+      break;
+    case "":
+      this.list = []
+      break;
+    case "":
+      this.list = []
+      break;
+    case "":
+      this.list = []
+      break;
+    case "":
+      this.list = []
+      break;
+    case "":
+      this.list = []
+      break;
+    case "":
+      this.list = []
+      break;
+    case "":
+      this.list = []
+      break;
+    default:
+      break;
+  }
+}
+
 letterCombinations("792");
