@@ -9,92 +9,35 @@
  */
 var letterCombinations = function(digits) {
   if (digits.length === 0) return [];
-  const valueMap = {
-    "2": function () {
-      return {
-        list: ["a", "b", "c"],
-        currentIndex: 0
-      }
-    },
-    "3": function () {
-      return {
-        list: ["d", "f", "e"],
-        currentIndex: 0
-      }
-    },
-    "4": function () {
-      return {
-        list: ["g", "h", "i"],
-        currentIndex: 0
-      }
-    },
-    "5": function () {
-      return {
-        list: ["j", "k", "l"],
-        currentIndex: 0
-      }
-    },
-    "6": function () {
-      return {
-        list: ["m", "n", "o"],
-        currentIndex: 0
-      }
-    },
-    "7": function () {
-      return {
-        list: ["p", "q", "r", "s"],
-        currentIndex: 0
-      }
-    },
-    "8": function () {
-      return {
-        list: ["t", "u", "v"],
-        currentIndex: 0
-      }
-    },
-    "9": function () {
-      return {
-        list: ["w", "x", "y", "z"],
-        currentIndex: 0
-      }
-    }
+  let letterMap = {
+    '2': ['a', 'b', 'c'],
+    '3': ['d', 'e', 'f'],
+    '4': ['g', 'h', 'i'],
+    '5': ['j', 'k', 'l'],
+    '6': ['m', 'n', 'o'],
+    '7': ['p', 'q', 'r', 's'],
+    '8': ['t', 'u', 'v'],
+    '9': ['w', 'x', 'y', 'z']
   };
 
-  let objList = digits.split("").map(s => valueMap[s]());
+  let strings = [letterMap[digits[0]]];
 
-  console.log(objList);
-};
-
-var generator = function(s, parent) {
-  this.parent = parent;
-  switch(s) {
-    case "":
-      this.list = ["a", "b", "c"]
-      break;
-    case "":
-      this.list = []
-      break;
-    case "":
-      this.list = []
-      break;
-    case "":
-      this.list = []
-      break;
-    case "":
-      this.list = []
-      break;
-    case "":
-      this.list = []
-      break;
-    case "":
-      this.list = []
-      break;
-    case "":
-      this.list = []
-      break;
-    default:
-      break;
+  let currLetters, beforeStrings, currStrings,
+      i, j, k, str;
+  for (i = 1; i < digits.length; i ++) {
+    currLetters = letterMap[digits[i]];
+    currStrings = [];
+    beforeStrings = strings[strings.length - 1]
+    for (j = 0; j < currLetters.length; j ++) {
+      for (k = 0; k < beforeStrings.length; k ++) {
+        str = beforeStrings[k] + currLetters[j];
+        currStrings.push(str);
+      }
+    }
+    strings.push(currStrings);
   }
-}
+
+  return strings[strings.length - 1];
+};
 
 letterCombinations("792");
