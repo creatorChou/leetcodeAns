@@ -1,6 +1,6 @@
 /**
-* 82. Remove Duplicates from Sorted List II
-* https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/description/
+* 83. Remove Duplicates from Sorted List
+* https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/
 */
 
 /**
@@ -15,11 +15,16 @@
  * @return {ListNode}
  */
 var deleteDuplicates = function(head) {
+  if (head === null || head.next === null) {
+    return head;
+  }
   let node = head;
-  let prev, currentValue;
   while (node.next) {
-
+    if (node.val === node.next.val) {
+      node.next = node.next.next;
+    } else {
+      node = node.next;
+    }
   }
   return head;
 };
-
