@@ -8,30 +8,30 @@
  * @return {string}
  */
 var shortestPalindrome = function(s) {
-  let ss = s;
-  let start = 0, cut;
-  for (let i = s.length; i >= 0; i --) {
-    cut = s.slice(0, i);
-    if (isPal(cut)) {
-      start = i;
-      break;
+  let rev = s.split("").reverse().join("");
+  if (s === rev) return s;
+  for (let i = s.length - 1; i >= 0; i --) {
+    if (s.slice(0, i) === rev.slice(s.length - i)) {
+      return rev.slice(0, s.length - i) + s;
     }
   }
-  let res = s;
-  for (let i = start; i < s.length; i ++) {
-    res = s[i] + res;
-  }
-  return res;
+  return "";
 };
 
-function isPal (s) {
-  let l = 0, r = s.length - 1;
-  while (l < r) {
-    if (s[l] !== s[r]) return false;
-    l ++;
-    r --;
-  }
-  return true;
-}
+console.log(shortestPalindrome("a"));
 
-console.log(shortestPalindrome("aacecaaa"));
+
+var shortestPalindrome = function(s) {
+    let left = 0;
+    for (let i = s.length - 1; i >= 0; i--) {
+        if (s[left] === s[i]) {
+            left++;
+        }
+    }
+    if (left === s.length)
+        return s;
+    const subfix = s.substring(left);
+    const prefix = subfix.split("").reverse().join("");
+    const mid = shortestPalindrome(s.substring(0, left));
+    return `${prefix}${mid}${subfix}`;
+};
