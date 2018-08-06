@@ -8,34 +8,34 @@
  * @return {number}
  */
 var maximalSquare = function(matrix) {
-  if (!matrix || matrix.length === 0) return 0;
-  let i, j, len = matrix[0].length;
-  let lenArr = new Array(len);
-  for (i = 0; i < len; i ++) {
-    lenArr[i] = [];
-  }
+  if (matrix.length === 0) return 0;
+  let i, j, max = 0,
+      len = matrix[0].length;
   for (i = 0; i < matrix.length; i ++) {
     for (j = 0; j < len; j ++) {
-      matrix[i][j] = parseInt(matrix[i][j]);
-      if (matrix[i][j - 1] && matrix[i][j] !== 0) {
-        matrix[i][j] += matrix[i][j - 1];
+      let l = parseInt(matrix[i][j - 1]),
+          t = parseInt(matrix[i - 1] ? matrix[i - 1][j] : null),
+          lt = parseInt(matrix[i - 1] ? matrix[i - 1][j - 1] : null);
+      if (l != null && t != null && lt != null) {
+        if (matrix[i][j] === "1") {
+          let min = Math.min(l, t, lt);
+          if (min > 0) {
+            matrix[i][j] = min + 1;
+            max = Math.max(max, matrix[i][j]);
+          } else {
+            max = Math.max(max, 1);
+          }
+        }
       }
-      lenArr[j][i] = matrix[i][j];
+      if (l > 0 || t > 0 || lt > 0) {
+        max = Math.max(max, 1);
+      }
     }
   }
-  let maxSize = 0;
-  for (i = 0; i < len; i ++) {
-    maxSize = Math.max(maxSize, findMax(lenArr[i]));
-  }
-  return maxSize;
-};
-
-// ???
-var findMax = function (arr) {
-  let max = 0, end, base;
-  for (let i = 0; i < arr.length; i ++) {
-    end = Math.min(arr[i] + i, arr.length - 1);
-    
-  }
-  return max;
+  return max * max;
 }
+
+let sq = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+
+console.log(maximalSquare(sq))
+console.log(sq);
