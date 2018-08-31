@@ -8,31 +8,30 @@
  * @return {number}
  */
 var maxCoins = function(nums) {
-  if (nums.length === 0) {
-    return 0;
-  } else if (nums.length === 1) {
-    return nums[0];
-  } else if (nums.length === 2) {
-    return nums[0] * nums[1] + Math.max(nums[0], nums[1]);
-  } else {
-    let min = nums[1],
-        index = 1,
-        product = nums[0] * nums[1] * nums[2],
-        p;
-    for (let i = 2; i < nums.length - 1; i ++) {
-      if (nums[i] < min) {
-        min = nums[i];
-        index = i;
-        product = nums[i - 1] * nums[i] * nums[i + 1];
-      } else if (nums[i] === min) {
-        p = nums[0] * nums[1] * nums[2];
-        if (product < p) {
-          index = i;
-          product = p;
-        }
-      }
-    }
-    nums.splice(index, 1);
-    return product + maxCoins(nums);
+  let arr = [1, ...nums, 1];
+  let len = arr.length;
+  let memo = [];
+  for (let i = 0; i < len; i ++) {
+    let subArr = new Array(len);
+    subArr.fill(0);
+    memo.push(subArr);
   }
+  return burst(memo, arr, 0, len - 1);
 };
+
+
+function burst (memo, arr, l, r) {
+  if (l === r - 1) return 0;
+  if (memo[l][r] > 0) return memo[l][r];
+  let result = 0,
+      product = arr[l] * arr[r],
+      curr;
+  for (let i = l + 1; i < r; i ++) {
+    curr = arr[i] * product + burst(memo, arr, l, i) + burst(memo, arr, i, r);
+    result = Math.max(result, curr);
+  }
+  memo[l][r] = result;
+  return result;
+}
+
+console.log(maxCoins([1,4,8,1]));
