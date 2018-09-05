@@ -48,8 +48,13 @@ function coinChange2 (coins, amount) {
 	dp[0] = 0;
 	while (sum <= amount) {
 		for (let i = 0; i < coins.length; i ++) {
-			if (sum >= coins[i] && dp[sum - coins[i]] != null && dp[sum - coins[i]] !== -1) {
-				dp[sum] = dp[sum] == null ? dp[sum - coins[i]] + 1 : Math.min(dp[sum], dp[sum - coins[i]] + 1);
+			let before = dp[sum - coins[i]] + 1;
+			if (sum >= coins[i] && before > 0) {
+				if (typeof dp[sum] === "undefined") {
+					dp[sum] = before;
+				} else {
+					dp[sum] = Math.min(dp[sum], before);
+				}
 			}
 		}
 		sum ++;
