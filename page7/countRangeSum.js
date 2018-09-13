@@ -10,5 +10,6 @@
  * @return {number}
  */
 var countRangeSum = function(nums, lower, upper) {
-  
+  let start = Math.max(0, lower);
+  let end = Math.min(nums.length - 1, upper);
 };
