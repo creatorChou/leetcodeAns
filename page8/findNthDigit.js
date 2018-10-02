@@ -8,18 +8,21 @@
  * @return {number}
  */
 var findNthDigit = function(n) {
-  let digit = 0,
-      count = 1,
+  let digit = 1,  // 当前位数
+      count = 0,  // 总个数
       num;
   while (count < n) {
-    num = Math.pow(10, digit);
-    count += digit * num * 9;
-    digit ++;
+    num = 9 * Math.pow(10, digit - 1) * digit;
+    if (count + num < n) {
+      count += num;
+      digit ++;
+    } else {
+      break;
+    }
   }
   digit --;
-  count -= digit * num * 9;
-  console.log(digit, num, count);
-
+  let base = Math.pow(10, digit);
+  return (n - base) % digit;
 };
 
 // 1 in 10: 10
