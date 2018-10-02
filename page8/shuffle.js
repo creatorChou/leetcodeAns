@@ -1,6 +1,6 @@
 /**
-*	384. Shuffle an Array
-*	https://leetcode.com/problems/shuffle-an-array/description/
+* 384. Shuffle an Array
+* https://leetcode.com/problems/shuffle-an-array/description/
 */
 
 /**
@@ -8,6 +8,7 @@
  */
 var Solution = function(nums) {
   this.nums = nums;
+  this.copy = nums.slice();
 };
 
 /**
@@ -15,7 +16,7 @@ var Solution = function(nums) {
  * @return {number[]}
  */
 Solution.prototype.reset = function() {
-  return this.nums;
+  return this.nums = this.copy;
 };
 
 /**
@@ -23,9 +24,12 @@ Solution.prototype.reset = function() {
  * @return {number[]}
  */
 Solution.prototype.shuffle = function() {
-  let ret = [];
-  let map = {};
-  let len = this.nums.length;
-  while (len > 0)
+  for (let i = this.nums.length - 1; i >= 0; i--) {
+    let rand = Math.trunc(Math.random() * i);
+    this.nums[i] ^= this.nums[rand];
+    this.nums[rand] ^= this.nums[i];
+    this.nums[i] ^= this.nums[rand];
+  }
+  return this.nums;
 };
 
