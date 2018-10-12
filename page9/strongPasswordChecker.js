@@ -16,8 +16,7 @@ It must NOT contain three repeating characters in a row ("...aaa..." is weak, bu
  * @return {number}
  */
 var strongPasswordChecker = function(s) {
-  let replace = 0;
-      duplicate = 0,
+  let duplicate = 0,
       duplicates = [],
       kind = [false, false, false];
   for (let i = 0; i <= s.length; i ++) {
@@ -40,21 +39,70 @@ var strongPasswordChecker = function(s) {
       kind[2] = true;
     }
   }
+  duplicates.sort((a, b) => a - b);
   let kindCount = 0;
   for (let i = 0; i < 3; i ++) {
     if (kind[i] === true) {
       kindCount ++;
     }
   }
-  let duplicateCount = 0;
-  for (let i = 0; i < duplicates.length; i ++) {
-    duplicateCount += Math.floor(duplicates[i] / 3);
-  }
-  if (s.length < 6) {
-
+  console.log(s.length, kindCount, duplicates);
+  if (s.length < 5) {
+    return 6 - s.length;
+  } else if (s.length === 5) {
+    if (kindCount === 1) {
+      return 2;
+    } else {
+      return 1;
+    }
   } else if (s.length > 20) {
-
+    let shouldDeleteCount = s.length - 20;
+    let canDeleteDuplicateCount = 0;
+    for (let i = 0; i < duplicates.length; i ++) {
+      if (duplicates[i] > 2) {
+        canDeleteDuplicateCount += duplicates[i] - 2;
+      }
+    }
+    if (shouldDeleteCount >= canDeleteDuplicateCount) {
+      return shouldDeleteCount + 3 - kindCount;
+    } else {
+      let shouldChangeCount1 = 0;
+      let shouldDeleteCount1 = shouldDeleteCount;
+      let duplicates1 = duplicates.slice();
+      for (let i = 0; i < duplicates1.length; i ++) {
+        while (duplicates1[i] > 2 && shouldDeleteCount1 > 0) {
+          duplicates1[i] --;
+          shouldDeleteCount1 --;
+        }
+        shouldChangeCount1 += Math.floor(duplicates1[i] / 3);
+      }
+      let shouldChangeCount2 = 0;
+      let shouldDeleteCount2 = shouldDeleteCount;
+      let duplicates2 = duplicates.slice();
+      for (let i = 0; i < duplicates2.length; i ++) {
+        if (shouldDeleteCount2 > 0) {
+          if (duplicates2[i] > 2) {
+            duplicates2[i] --;
+            shouldDeleteCount2 --;
+          }
+          if (i === duplicates2.length - 1) {
+            i = -1;
+          }
+        } else {
+          shouldChangeCount2 += Math.floor(duplicates2[i] / 3);
+        }
+      }
+      let shouldChangeCount = Math.min(shouldChangeCount1, shouldChangeCount2);
+      return s.length - 20 + Math.max(shouldChangeCount, 3 - kindCount);
+    }
   } else {
-
+    let shouldChangeCount = 0;
+    for (let i = 0; i < duplicates.length; i ++) {
+      shouldChangeCount += Math.floor(duplicates[i] / 3);
+    }
+    return Math.max(3 - kindCount, shouldChangeCount);
   }
 };
+
+// console.log(strongPasswordChecker("AAAAAABBBBBB123456789a"));
+console.log(strongPasswordChecker("aaaaabbbb1234567890ABA"));
