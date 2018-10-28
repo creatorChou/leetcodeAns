@@ -17,7 +17,7 @@ var repeatedSubstringPattern = function(s) {
   }
   return false;
 };
-
+ 
 
 /**
  * @param {string} s
