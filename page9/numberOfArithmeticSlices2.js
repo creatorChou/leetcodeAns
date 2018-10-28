@@ -8,19 +8,34 @@
  * @return {number}
  */
 var numberOfArithmeticSlices = function(A) {
-  let sum = 0;
+  let dp = [];
   for (let i = 0; i < A.length; i ++) {
-    for (let j = A.length - 1; j >= i; j --) {
-      let len = j - i + 1;
-      let interval = 1;
-      let count = 0;
-      while ((len - 1) / interval >= 2) {
-        if ((len - 1) % interval === 0) {
+    dp[i] = [];
+  }
+  let sum = 0;
+  for (let i = 0; i < A.length - 2; i ++) {
+    for (let j = i + 1; j < A.length - 1; j ++) {
+      let diff = A[j] - A[i];
+      if (dp[i][diff]) continue;
+      dp[i][diff] = true;
+      dp[j][diff] = true;
+      let count = 2;
+      let curr = A[j];
+      for (let k = j + 1; k < A.length; k ++) {
+        let newDiff = A[k] - curr;
+        if (newDiff < diff) {
+          continue;
+        } else if (newDiff > diff) {
+          break;
+        } else {
+          curr = A[k];
+          dp[k][diff] = true;
           count ++;
         }
-        interval ++;
       }
-      sum += count;
+      if (count >= 3) {
+        sum += getSubSum(count);
+      }
     }
   }
   return sum;
@@ -28,19 +43,8 @@ var numberOfArithmeticSlices = function(A) {
 
 function getSubSum (len) {
   let sum = 0;
-  for (let i = 0; i < len; i ++) {
-    for (let j = len - 1; j >= i; j --) {
-      let len = j - i + 1;
-      let interval = 1;
-      let count = 0;
-      while ((len - 1) / interval >= 2) {
-        if ((len - 1) % interval === 0) {
-          count ++;
-        }
-        interval ++;
-      }
-      sum += count;
-    }
+  for (var i = 3; i <= len; i ++) {
+    sum += len - i + 1;
   }
   return sum;
 }
