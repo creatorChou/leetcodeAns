@@ -19,25 +19,24 @@ var findMinStep = function(board, hand) {
       map[hand[i]] = 1;
     }
   }
-  return dfs(board, map);
+  return dfs(board, map, {});
 };
 
-function dfs (board, map) {
-  console.log(board, map);
+function dfs (board, map, memo) {
+  if (memo[board] != null) return memo[board];
+  if (board.length === 0) return 0;
   for (let i = 0; i < board.length; i ++) {
     if (board[i] === 0) {
       return -1;
     }
   }
   let min = Number.MAX_VALUE;
-  let hasSame = false;
   let allIllegal = true;
-  for (let i = 1; i < board.length; i ++) {
-    if (board[i] === board[i - 1] && map[board[i]] > 0) {
-      hasSame = true;
-      let newBoard = board.slice(0, i) + board[i] + board.slice(i);
+  for (let i = 0; i < board.length; i ++) {
+    if (map[board[i]] > 0) {
+      let newBoard = board.slice(0, i + 1) + board[i] + board.slice(i + 1);
       map[board[i]] --;
-      let next = dfs(deleteBalls(newBoard), map);
+      let next = dfs(deleteBalls(newBoard), map, memo);
       if (next !== -1) {
         allIllegal = false;
         min = Math.min(min, next);
@@ -45,21 +44,12 @@ function dfs (board, map) {
       map[board[i]] ++;
     }
   }
-  if (!hasSame) {
-    let count = 0;
-    for (let i = 0; i < board.length; i ++) {
-      if (map[board[i]] == null || map[board[i]] < 2) {
-        return -1;
-      }
-      count += 2;
-    }
-    return count;
-  }
   if (allIllegal) {
-    return -1;
+    memo[board] = -1;
   } else {
-    return min + 1;
+    memo[board] = min + 1;
   }
+  return memo[board];
 }
 
 function deleteBalls (balls) {
@@ -78,6 +68,7 @@ function deleteBalls (balls) {
           preBall = stack.pop()[0];
         } else {
           stack[stack.length - 1] = last + balls[i];
+          preBall = null;
         }
       } else {
         if (balls[i] !== preBall) {
@@ -90,4 +81,8 @@ function deleteBalls (balls) {
   return stack.join("");
 }
 
-console.log(findMinStep("WWGWGW", "GWBWR"));
+// deleteBalls("RGGBYYWWWYYBBGRGG")
+
+console.log(findMinStep("RGGBYRRYWWYYBBGRGG", "RRYWG"));
+
+// Runtime: 92 ms, faster than 100.00% of JavaScript online submissions for Zuma Game.
