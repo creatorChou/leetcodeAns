@@ -8,18 +8,25 @@
  * var rand7 = function() {}
  * @return {number} a random integer in the range 1 to 7
  */
-var rand10 = function() {
-  let l = 1,
-      r = 10;
 
-  while (l < r) {
-    let mid = Math.floor((l + r) / 2);
-    let rand = rand7();
-    if (rand < 4) {
-      l = mid;
-    } else if (rand > 4) {
-      r = mid;
-    }
+let matrix = [
+  [1,2,3,4,5,6,7],
+  [8,9,10,1,2,3,4],
+  [5,6,7,8,9,10,1],
+  [2,3,4,5,6,7,8],
+  [9,10,1,2,3,4,5],
+  [6,7,8,9,10,null,null],
+  [null,null,null,null,null,null,null],
+]
+
+var rand10 = function() {
+  let i = rand7() - 1;
+  let j = rand7() - 1;
+  if (matrix[i][j] !== null) {
+    return matrix[i][j];
+  } else {
+    return rand10();
   }
-  return l;
 };
+
+// Runtime: 132 ms, faster than 100.00% of JavaScript online submissions for Implement Rand10() Using Rand7().
