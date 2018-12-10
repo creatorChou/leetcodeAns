@@ -17,12 +17,25 @@ var MapSum = function() {
  */
 MapSum.prototype.insert = function(key, val) {
   let node = this.tireHead;
+  let nodes = [];
   for (let char of key) {
     if (!node.next[char]) {
       node.next[char] = new TireNode();
     }
     node = node.next[char];
-    node.value += val;
+    nodes.push(node);
+  }
+  let override = false;
+  if (node.isEnd) {
+    override = true;
+  }
+  node.isEnd = true;
+  for (let i = 0; i < nodes.length; i ++) {
+    if (override) {
+      nodes[i].value = val;
+    } else {
+      nodes[i].value += val;
+    }
   }
 };
 
@@ -46,6 +59,7 @@ MapSum.prototype.sum = function(prefix) {
 
 
 function TireNode () {
+  this.isEnd = false;
   this.value = 0;
   this.next = {}
 }
@@ -56,3 +70,5 @@ function TireNode () {
  * obj.insert(key,val)
  * var param_2 = obj.sum(prefix)
  */
+
+// Runtime: 60 ms, faster than 33.96% of JavaScript online submissions for Map Sum Pairs.
