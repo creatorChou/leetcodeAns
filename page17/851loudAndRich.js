@@ -19,5 +19,37 @@
  * @return {number[]}
  */
 var loudAndRich = function(richer, quiet) {
-  
+  let len = quiet.length;
+  let ans = new Array(len);
+  let memo = new Array(len);
+  for (let i = 0; i < len; i ++) {
+    let richers = getRichers(richer, memo, i);
+    ans[i] = i;
+    richers.forEach(val => {
+      if (quiet[val] < quiet[ans[i]]) {
+        ans[i] = val;
+      }
+    });
+  }
+  return ans;
 };
+
+function getRichers(richer, memo, p) {
+  if (memo[p]) return memo[p];
+  memo[p] = new Set();
+  for (let r of richer) {
+    if(r[1] === p && !memo[p].has(r[0])) {
+      memo[p].add(r[0]);
+      let next;
+      if (memo[r[0]]) {
+        next = memo[r[0]];
+      } else {
+        next = getRichers(richer, memo, r[0])
+      }
+      next.forEach(val => memo[p].add(val));
+    }
+  }
+  return memo[p];
+}
+
+// Runtime: 728 ms, faster than 5.56% of JavaScript online submissions for Loud and Rich.
