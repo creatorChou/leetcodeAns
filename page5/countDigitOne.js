@@ -8,5 +8,7 @@
  * @return {number}
  */
 var countDigitOne = function(n) {
+  let s = String(n);
+  if (s[0] === "1") return n;
   
 };
