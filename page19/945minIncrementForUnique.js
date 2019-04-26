@@ -37,29 +37,29 @@ var minIncrementForUnique = function(A) {
  * @return {number}
  */
 var minIncrementForUnique = function(A) {
-  let map = {};
+  let bucket = [];
   for (let num of A) {
-    if (map[num]) {
-      map[num] ++;
-    } else {
-      map[num] = 1;
-    }
+    if (!bucket[num]) bucket[num] = 0;
+    bucket[num] ++;
   }
   let count = 0;
-  let accumulation = [];
-  for (let i = 0; i < 40000; i ++) {
-    count += accumulation.length;
-    if (map[i] > 1) {
-      accumulation.push(map[i] - 1);
-    } else if (map[i] == null) {
-      if (accumulation.length > 0) {
-        accumulation[0] --;
-        if (accumulation[0] === 0) {
-          accumulation.shift();
-        }
+  let sum = 0;
+  for (let i = 0; i < bucket.length; i ++) {
+    count += sum;
+    if (bucket[i] > 1) {
+      sum += bucket[i] - 1;
+    } else if (bucket[i] == null) {
+      if (sum > 0) {
+        sum --;
       }
     }
   }
-  return count;
+  return count + (sum + 1) * sum / 2;
 };
+
+
+console.log(minIncrementForUnique([2,2,2,1]))
+
+// Runtime: 112 ms, faster than 98.29% of JavaScript online submissions for Minimum Increment to Make Array Unique.
+// Memory Usage: 43.5 MB, less than 20.00% of JavaScript online submissions for Minimum Increment to Make Array Unique.
 
