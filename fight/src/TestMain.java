@@ -23,7 +23,6 @@ public class TestMain {
     System.out.println("QuickFindUF:" + Arrays.toString(quickFindUF.id));
   }
 
-
   private static void tryQuickUnionUF() {
     QuickUnionUF quickUnionUF = new QuickUnionUF(10);
     quickUnionUF.union(5, 6);
