@@ -24,5 +24,6 @@ var isValid = function(S) {
   return stack.length === 0;
 };
 
+
 // Runtime: 68 ms, faster than 85.71% of JavaScript online submissions for Check If Word Is Valid After Substitutions.
 // Memory Usage: 40.1 MB, less than 100.00% of JavaScript online submissions for Check If Word Is Valid After Substitutions.
